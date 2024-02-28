@@ -2,14 +2,17 @@
 import { Card, CardMedia, Container, TextField, Grid, CardContent, Typography } from "@mui/material"
 import RecipeItems from "../../component/navbar/recipe-items"
 import { useState, useEffect } from "react"
-
+import nodata from '../../Assect/images/undraw_no_data_re_kwbl.svg'
+import loader from '../../Assect/images/motion-blur-2.svg'
 
 
 export default function Recipes() {
     const [recipes, setRecipes] = useState([]);
     const [searchItem, setSearchItem] = useState("")
+    const [loading, setLoaing] = useState(false)
 
     const searchRecipes = () => {
+        setLoaing(true)
         // the url is use to get the item or the images or whatever you want to get
         const url = new URL('https://api.spoonacular.com/recipes/complexSearch');
         url.searchParams.append('apiKey', process.env.REACT_APP_SPOONACULAR_API_KEY);
@@ -22,7 +25,7 @@ export default function Recipes() {
             })
             .catch((error) => {
                 console.log(error);
-            })
+            }).finally(() => setLoaing(false))
     }
     // 
     useEffect(searchRecipes, []);
@@ -44,10 +47,15 @@ export default function Recipes() {
 
                 <Grid sx={{ mt: "2rem" }} container spacing={3}>
                     {/* the.map is use to render a list of iterms from an array */}
-                    {recipes.map((recipe) =>
+                    {loading ?<img src={loader} width="25%"/> : recipes.length > 0 ? recipes.map((recipe) =>
                         // so you pass the key on the list that you want to get from the api or the url then you pass each into the param at the child component
                         <RecipeItems key={recipe.id} title={recipe.title} image={recipe.image} />
+                    ) :(
+                        <Container sx={{display: 'flex', justifyContent: 'center'}}>
+                        <img src={nodata} width="25%"/>
+                        </Container>
                     )}
+                    
 
                 </Grid>
             </Container>
