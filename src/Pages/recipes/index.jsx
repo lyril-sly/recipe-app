@@ -49,7 +49,7 @@ export default function Recipes() {
                     {/* the.map is use to render a list of iterms from an array */}
                     {loading ?<img src={loader} width="25%"/> : recipes.length > 0 ? recipes.map((recipe) =>
                         // so you pass the key on the list that you want to get from the api or the url then you pass each into the param at the child component
-                        <RecipeItems key={recipe.id} title={recipe.title} image={recipe.image} />
+                        <RecipeItems key={recipe.id} title={recipe.title} image={recipe.image} id={recipe.id} />
                     ) :(
                         <Container sx={{display: 'flex', justifyContent: 'center'}}>
                         <img src={nodata} width="25%"/>
